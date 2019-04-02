@@ -10,7 +10,7 @@ BaselineOfWillowChat >> baseline: spec [
 	spec
 		for: #common
 		do: [ spec
-				project: 'WillowBootstrap'
+				baseline: 'WillowBootstrap'
 				with: [ spec
 						repository: 'github://ba-st/Willow-Bootstrap:v11/source';
 						loads: 'Deployment' ].
