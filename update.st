@@ -2,5 +2,5 @@ Metacello new
  baseline:'WillowChat';
  repository: 'github://mattonem/WillowChat:master/src';
  load.
-(Smalltalk at: #WillowChatApplication) start.
+(Smalltalk at: #SanboxRoot) start.
 WorldState saveSession.
