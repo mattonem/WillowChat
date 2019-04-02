@@ -21,6 +21,6 @@ WillowChatWelcome >> renderContentOn: aRenderer [
 	uid
 		ifNotNil: [ aRenderer anchor
 				class: 'btn btn-primary';
-				url: 'uid/' , uid;
+				url: '/', WillowChatApplication handlerName,'/uid/' , uid;
 				with: 'access' ]
 ]

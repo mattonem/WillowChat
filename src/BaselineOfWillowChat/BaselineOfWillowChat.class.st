@@ -16,5 +16,6 @@ BaselineOfWillowChat >> baseline: spec [
 						loads: 'Deployment' ].
 			spec
 				package: 'WillowChat';
+				package: 'Sandbox';
 				yourself ]
 ]
