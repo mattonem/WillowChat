@@ -45,6 +45,20 @@ SandboxRoot class >> unregisterFromApplications [
 	WAAdmin unregister: '/welcome'
 ]
 
+{ #category : #testing }
+SandboxRoot class >> updateRoot: aRoot [
+	super updateRoot: aRoot.
+	aRoot script
+		attributeAt: 'async' put: true;
+		url: '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'.
+	aRoot script
+		with:
+			'  (adsbygoogle = window.adsbygoogle || []).push({
+    google_ad_client: "ca-pub-6554111086429445",
+    enable_page_level_ads: true
+  });'
+]
+
 { #category : #rendering }
 SandboxRoot >> children [ 
 	^ { chatindex }
