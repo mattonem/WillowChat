@@ -17,6 +17,14 @@ WillowChatSession class >> initialize [
 ]
 
 { #category : #'instance creation' }
+WillowChatSession class >> newChat [
+	| uid |
+	uid := UUID new asString.
+	self newChat: uid.
+	^ uid
+]
+
+{ #category : #'instance creation' }
 WillowChatSession class >> newChat: uid [
 	models at: uid put: WillowChatModel new.
 	[ 1 hours wait.

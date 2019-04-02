@@ -1,10 +1,26 @@
 Class {
 	#name : #WillowChatWelcome,
 	#superclass : #WAComponent,
+	#instVars : [
+		'uid'
+	],
 	#category : #WillowChat
 }
 
 { #category : #testing }
 WillowChatWelcome class >> canBeRoot [ 
 ^ true
+]
+
+{ #category : #rendering }
+WillowChatWelcome >> renderContentOn: aRenderer [
+	aRenderer anchor
+		callback: [ uid := WillowChatSession newChat ];
+		class: 'btn btn-primary';
+		with: 'new chat'.
+	uid
+		ifNotNil: [ aRenderer anchor
+				class: 'btn btn-primary';
+				url: 'uid/' , uid;
+				with: 'access' ]
 ]

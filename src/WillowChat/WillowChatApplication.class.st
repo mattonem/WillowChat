@@ -32,10 +32,10 @@ WillowChatApplication class >> registerAsApplicationUsing: deploymentModeClass [
 	| application welcomeApp |
 
 	welcomeApp := WAAdmin register: WillowChatWelcome asApplicationAt: self handlerName, '/access'.
-	welcomeApp preferenceAt: #sessionClass put: self sessionClass.
 	welcomeApp filter configuration at: #exceptionHandler put: self errorHandlerFactory.
 	welcomeApp configuration addParent: WillowSystemConfiguration instance.
 	welcomeApp preferenceAt: WillowSystemConfiguration deploymentModeClassKey put: deploymentModeClass.
+	welcomeApp addLibrary: Bootstrap3DeploymentMetadataLibrary.
 	application := WAAdmin register: self asApplicationAt: self handlerName, '/uid'.
 	application preferenceAt: #sessionClass put: self sessionClass.
 	application filter configuration at: #exceptionHandler put: self errorHandlerFactory.
@@ -61,7 +61,7 @@ WillowChatApplication class >> sessionClass [
 { #category : #'private-utility' }
 WillowChatApplication class >> start [
 
-	self registerAsDevelopmentApplication.
+	self registerAsDeployedApplication.
 	(ZnZincServerAdaptor port: 8080)
 		codec: GRPharoUtf8Codec new;
 		start
