@@ -103,9 +103,9 @@ WDiceApplication >> contentView [
 { #category : #initialization }
 WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
-	self model announcer
+	"self model announcer
 		when: WCNewMessage
-		do: [ :el | ].
+		do: [ :el | ]."
 	self initializeContent.
 	semaphore := Semaphore new.
 	firstRender := true

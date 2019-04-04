@@ -2,7 +2,8 @@ Class {
 	#name : #SandboxRoot,
 	#superclass : #WAComponent,
 	#instVars : [
-		'chatindex'
+		'chatindex',
+		'children'
 	],
 	#category : #Sandbox
 }
@@ -23,8 +24,8 @@ SandboxRoot class >> registerAsDeployedApplication [
 { #category : #accessing }
 SandboxRoot class >> start [
 	self registerAsDeployedApplication.
-	WillowChatApplication registerAsDeployedApplication.
-	
+	WillowSharedModelSession
+		allSubclassesDo: [ :clazz | clazz applicationClass registerAsDeployedApplication ].
 	(ZnZincServerAdaptor port: 8080)
 		codec: GRPharoUtf8Codec new;
 		start
@@ -35,7 +36,8 @@ SandboxRoot class >> stop [
 	ZnServer stopDefault.
 	ZnZincServerAdaptor allInstancesDo: [ :each | each shutDown ].
 	self unregisterFromApplications.
-	WillowChatApplication unregisterFromApplications.
+	WillowSharedModelSession
+		allSubclassesDo: [ :clazz | clazz applicationClass unregisterFromApplications ].
 	Smalltalk garbageCollect
 	
 ]
@@ -47,18 +49,18 @@ SandboxRoot class >> unregisterFromApplications [
 
 { #category : #rendering }
 SandboxRoot >> children [ 
-	^ { chatindex }
+	^ children
 ]
 
 { #category : #rendering }
 SandboxRoot >> initialize [
 	super initialize.
-	chatindex := WillowChatWelcome new
+	children := WillowSharedModelWelcome allSubclasses collect: [ :aclazz | aclazz new]. 
 ]
 
 { #category : #rendering }
 SandboxRoot >> renderContentOn: aRenderer [
-	aRenderer render: chatindex.
+	children do: [ :c | aRenderer div with: [ aRenderer render: c ] ]
 ]
 
 { #category : #rendering }

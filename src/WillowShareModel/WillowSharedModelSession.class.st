@@ -12,8 +12,13 @@ Class {
 }
 
 { #category : #'instance creation' }
+WillowSharedModelSession class >> applicationClass [
+	^ self subclassResponsibility 
+]
+
+{ #category : #'instance creation' }
 WillowSharedModelSession class >> handlerName [
-	^ self modelClass handlerName
+	^ self applicationClass handlerName
 ]
 
 { #category : #'instance creation' }

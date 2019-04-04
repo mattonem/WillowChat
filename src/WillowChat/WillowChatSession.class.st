@@ -4,6 +4,11 @@ Class {
 	#category : #WillowChat
 }
 
+{ #category : #'as yet unclassified' }
+WillowChatSession class >> applicationClass [
+	^ WillowChatApplication 
+]
+
 { #category : #'instance creation' }
 WillowChatSession class >> modelClass [
 	^ WillowChatModel 
