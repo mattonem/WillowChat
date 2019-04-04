@@ -43,7 +43,7 @@ WDiceModel >> faces: newFaces [
 { #category : #initialization }
 WDiceModel >> initialize [
 	announcer := Announcer new.
-	faces := OrderedCollection withAll: {1 . 2 . 3 . 4 . 5 . 6}.
+	faces := OrderedCollection withAll: {'⚀' . '⚁' . '⚂' . '⚃' . '⚄' . '⚅'}.
 	diceName := 'a dice'.
 	rolling := false.
 	
