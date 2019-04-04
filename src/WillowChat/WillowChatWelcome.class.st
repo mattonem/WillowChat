@@ -15,7 +15,7 @@ WillowChatWelcome class >> canBeRoot [
 { #category : #rendering }
 WillowChatWelcome >> renderContentOn: aRenderer [
 	aRenderer anchor
-		callback: [ uid := WillowChatSession newChat ];
+		callback: [ uid := WillowSharedModelSession newChat ];
 		class: 'btn btn-primary';
 		with: 'new chat'.
 	uid

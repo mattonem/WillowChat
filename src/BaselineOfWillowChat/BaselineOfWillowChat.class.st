@@ -15,6 +15,7 @@ BaselineOfWillowChat >> baseline: spec [
 						repository: 'github://ba-st/Willow-Bootstrap:v11/source';
 						loads: 'Deployment' ].
 			spec
+				package: 'WillowShareModel';
 				package: 'WillowChat';
 				package: 'Sandbox';
 				yourself ]
