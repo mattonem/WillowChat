@@ -258,9 +258,9 @@ WDiceApplication >> model [
 WDiceApplication >> renderDice: canvas [
 	canvas header: self model diceName.
 	^ self model isRolling
-		ifTrue: [ canvas header: '🎲' ]
+		ifTrue: [ canvas heading: '🎲' ]
 		ifFalse: [ canvas
-				header: self model lastResult asString;
+				paragraph: self model lastResult asString;
 				render: button;
 				render: editButton ]
 ]
