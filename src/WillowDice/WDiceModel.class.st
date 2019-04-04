@@ -3,7 +3,9 @@ Class {
 	#superclass : #Object,
 	#instVars : [
 		'announcer',
-		'faces'
+		'faces',
+		'rolling',
+		'lastResult'
 	],
 	#classInstVars : [
 		'announcer'
@@ -19,14 +21,39 @@ WDiceModel >> announcer [
 { #category : #initialization }
 WDiceModel >> initialize [
 	announcer := Announcer new.
-	faces := OrderedCollection withAll: {1 . 2 . 3 . 4 . 5 . 6}
+	faces := OrderedCollection withAll: {1 . 2 . 3 . 4 . 5 . 6}.
+	rolling := false.
+	
+]
+
+{ #category : #initialization }
+WDiceModel >> isRolling [
+	^ rolling
+]
+
+{ #category : #initialization }
+WDiceModel >> lastResult [
+	^ lastResult
+]
+
+{ #category : #initialization }
+WDiceModel >> stopRolling [
+	lastResult := faces atRandom.
+	rolling := false.
+	announcer
+		announce:
+			(WDiceThrow new
+				result: lastResult;
+				yourself)
 ]
 
 { #category : #initialization }
 WDiceModel >> throw [
+	rolling ifTrue: [ ^ self ].
+	rolling := true.
+	[ 1 second wait. self stopRolling ] fork. 
 	announcer
 		announce:
-			(WDiceThrow new
-				result: faces atRandom;
-				yourself)
+			(WDiceRolling new
+				yourself).
 ]

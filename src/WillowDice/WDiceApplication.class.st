@@ -107,8 +107,8 @@ WDiceApplication >> contentView [
 WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
 	self model announcer
-		when: WDiceThrow
-		do: [ :ev | self lastThrow: ev result ].
+		when: WDiceThrow, WDiceRolling 
+		do: [ :ev | semaphore signal].
 	self initializeResult.
 	self initializeButton.
 	self initializeContent.
@@ -120,7 +120,7 @@ WDiceApplication >> initialRequest: request [
 { #category : #initialization }
 WDiceApplication >> initializeButton [
 	button := AsynchronicButtonWebView
-		labeled: 'send'
+		labeled: 'throw'
 		applying: [ :theButton | theButton addClass bootstrap button ].
 	button onTrigger
 		determineBehaviorByEvaluating: [ :response | 
@@ -141,10 +141,12 @@ WDiceApplication >> initializeResult [
 	^ result := PeriodicallyRenderedWebView
 		evaluating: [ firstRender
 				ifTrue: [ firstRender := false ]
-				ifFalse: [ semaphore wait ] ]
-		every: 0
+				ifFalse: [ semaphore wait. ] ]
+		every: 10
 		millisecondsThenRendering:
-			[ :canvas | canvas header: lastThrow asString ]
+			[ :canvas | 
+			self model isRolling ifTrue: [canvas header: '🎲' ] ifFalse: [ canvas header: self model lastResult asString  ]
+			]
 		until: [ false ]
 ]
 
