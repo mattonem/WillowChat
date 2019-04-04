@@ -256,9 +256,9 @@ WDiceApplication >> model [
 
 { #category : #initialization }
 WDiceApplication >> renderDice: canvas [
-	canvas header: self model diceName.
+	canvas heading: self model diceName.
 	^ self model isRolling
-		ifTrue: [ canvas heading: '🎲' ]
+		ifTrue: [ canvas paragraph: '🎲' ]
 		ifFalse: [ canvas
 				paragraph: self model lastResult asString;
 				render: button;
