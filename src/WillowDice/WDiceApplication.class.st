@@ -110,6 +110,17 @@ WDiceApplication >> contentView [
 ]
 
 { #category : #initialization }
+WDiceApplication >> facesFromString: aString [
+	^ aString splitOn: ';'
+]
+
+{ #category : #initialization }
+WDiceApplication >> facesToString [
+	^';' join: self model faces.
+	
+]
+
+{ #category : #initialization }
 WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
 	edit := false.
@@ -121,6 +132,7 @@ WDiceApplication >> initialRequest: request [
 				ifFalse: [ semaphore signal ] ].
 	self initializeEditButton.
 	self initializeNameInput.
+	self initializeValuesInput.
 	self initializeSubmitButton.
 	self initializeEditForm.
 	self initializeResult.
@@ -169,6 +181,7 @@ WDiceApplication >> initializeEditForm [
 			nameInput identifyIn: canvas.
 			canvas
 				render: nameInput;
+				render: valuesInput;
 				render: editSubmitButton ]
 		applying: [ :aForm | 
 			aForm addClass bootstrap formGroup
@@ -201,9 +214,11 @@ WDiceApplication >> initializeSubmitButton [
 		applying: [ :theButton | theButton addClass bootstrap button ].
 	editSubmitButton onTrigger
 		serializeContainerForm;
-		determineBehaviorByEvaluating: [ :response | 
+		determineBehaviorByEvaluating: [ :response | |newFaces|
+			newFaces := self facesFromString: valuesInput contents.
 			edit := false.
-			self model diceName: nameInput contents.
+			self model diceName: nameInput contents;
+			faces: newFaces .
 			semaphore signal ]
 ]
 
@@ -211,7 +226,7 @@ WDiceApplication >> initializeSubmitButton [
 WDiceApplication >> initializeValuesInput [
 	valuesInput := TextFieldWebView
 		singleLineTriggeringOnKeyUpApplying: [ :theInput | theInput addClass bootstrap formControl ].
-	valuesInput changeContentsTo: self model values
+	valuesInput changeContentsTo: self facesToString
 ]
 
 { #category : #accessing }

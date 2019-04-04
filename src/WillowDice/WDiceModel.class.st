@@ -31,6 +31,16 @@ WDiceModel >> diceName: anObject [
 ]
 
 { #category : #initialization }
+WDiceModel >> faces [
+	^ faces
+]
+
+{ #category : #initialization }
+WDiceModel >> faces: newFaces [
+	faces := newFaces
+]
+
+{ #category : #initialization }
 WDiceModel >> initialize [
 	announcer := Announcer new.
 	faces := OrderedCollection withAll: {1 . 2 . 3 . 4 . 5 . 6}.
