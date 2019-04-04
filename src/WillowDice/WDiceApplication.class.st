@@ -4,7 +4,10 @@ Class {
 	#instVars : [
 		'content',
 		'semaphore',
-		'firstRender'
+		'firstRender',
+		'lastThrow',
+		'result',
+		'button'
 	],
 	#category : #WillowDice
 }
@@ -103,23 +106,58 @@ WDiceApplication >> contentView [
 { #category : #initialization }
 WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
-	"self model announcer
-		when: WCNewMessage
-		do: [ :el | ]."
+	self model announcer
+		when: WDiceThrow
+		do: [ :ev | self lastThrow: ev result ].
+	self initializeResult.
+	self initializeButton.
 	self initializeContent.
 	semaphore := Semaphore new.
-	firstRender := true
+	firstRender := true.
+	lastThrow := 'nothing'
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeButton [
+	button := AsynchronicButtonWebView
+		labeled: 'send'
+		applying: [ :theButton | theButton addClass bootstrap button ].
+	button onTrigger
+		determineBehaviorByEvaluating: [ :response | 
+			self model throw ]
 ]
 
 { #category : #initialization }
 WDiceApplication >> initializeContent [
-	^ content
+	^ content := IdentifiedWebView
+		forDivNamed: 'root'
+		containing: [ :canvas | canvas render: result;
+			 render: button]
+		applying: [ :div | div addClass bootstrap containerFluid ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeResult [
+	^ result := PeriodicallyRenderedWebView
+		evaluating: [ firstRender
+				ifTrue: [ firstRender := false ]
+				ifFalse: [ semaphore wait ] ]
+		every: 0
+		millisecondsThenRendering:
+			[ :canvas | canvas header: lastThrow asString ]
+		until: [ false ]
 ]
 
 { #category : #accessing }
 WDiceApplication >> jQueryLibrary [
 
 	^(self deploymentMode libraryFor: JQuery3MetadataLibrary) default
+]
+
+{ #category : #initialization }
+WDiceApplication >> lastThrow: anObject [
+	lastThrow := anObject.
+	semaphore signal
 ]
 
 { #category : #accessing }
