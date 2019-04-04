@@ -22,7 +22,7 @@ WillowSharedModelWelcome >> renderContentOn: aRenderer [
 	aRenderer anchor
 		callback: [ uid := self class sessionClass newModel ];
 		class: 'btn btn-primary';
-		with: 'new chat'.
+		with: 'new ', self class sessionClass handlerName.
 	uid
 		ifNotNil: [ aRenderer anchor
 				class: 'btn btn-primary';

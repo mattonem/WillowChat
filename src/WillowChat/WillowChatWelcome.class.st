@@ -5,11 +5,6 @@ Class {
 }
 
 { #category : #testing }
-WillowChatWelcome class >> canBeRoot [ 
-^ true
-]
-
-{ #category : #testing }
 WillowChatWelcome class >> sessionClass [
 	^ WillowChatSession
 ]
