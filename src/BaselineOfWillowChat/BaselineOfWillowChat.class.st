@@ -17,6 +17,7 @@ BaselineOfWillowChat >> baseline: spec [
 			spec
 				package: 'WillowShareModel';
 				package: 'WillowChat';
+				package: 'WillowDice';
 				package: 'Sandbox';
 				yourself ]
 ]
