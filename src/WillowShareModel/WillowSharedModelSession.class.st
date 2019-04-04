@@ -12,6 +12,11 @@ Class {
 }
 
 { #category : #'instance creation' }
+WillowSharedModelSession class >> handlerName [
+	^ self modelClass handlerName
+]
+
+{ #category : #'instance creation' }
 WillowSharedModelSession class >> initialize [ 
 	models := Dictionary new.
 ]
@@ -19,21 +24,6 @@ WillowSharedModelSession class >> initialize [
 { #category : #'instance creation' }
 WillowSharedModelSession class >> modelClass [
 	^ self subclassResponsibility 
-]
-
-{ #category : #'instance creation' }
-WillowSharedModelSession class >> newChat [
-	| uid |
-	uid := UUID new asString.
-	self newChat: uid.
-	^ uid
-]
-
-{ #category : #'instance creation' }
-WillowSharedModelSession class >> newChat: uid [
-	models at: uid put: WillowChatModel new.
-	[ 1 hours wait.
-	models removeKey: uid ifAbsent: [  ] ] fork
 ]
 
 { #category : #'instance creation' }
