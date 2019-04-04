@@ -5,7 +5,8 @@ Class {
 		'announcer',
 		'faces',
 		'rolling',
-		'lastResult'
+		'lastResult',
+		'diceName'
 	],
 	#classInstVars : [
 		'announcer'
@@ -18,10 +19,22 @@ WDiceModel >> announcer [
 	^ announcer
 ]
 
+{ #category : #accessing }
+WDiceModel >> diceName [
+	^ diceName
+]
+
+{ #category : #accessing }
+WDiceModel >> diceName: anObject [
+	diceName := anObject.
+	announcer announce: WDiceChanged new.
+]
+
 { #category : #initialization }
 WDiceModel >> initialize [
 	announcer := Announcer new.
 	faces := OrderedCollection withAll: {1 . 2 . 3 . 4 . 5 . 6}.
+	diceName := 'a dice'.
 	rolling := false.
 	
 ]

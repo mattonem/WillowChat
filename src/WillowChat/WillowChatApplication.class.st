@@ -124,7 +124,7 @@ WillowChatApplication >> initialRequest: request [
 { #category : #initialization }
 WillowChatApplication >> initializeButton [
 	button := AsynchronicButtonWebView
-		labeled: 'throw'
+		labeled: 'send'
 		applying: [ :theButton | theButton addClass bootstrap button ].
 	button onTrigger
 		serializeContainerForm;

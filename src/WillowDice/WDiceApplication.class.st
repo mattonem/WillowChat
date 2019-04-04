@@ -7,7 +7,13 @@ Class {
 		'firstRender',
 		'lastThrow',
 		'result',
-		'button'
+		'button',
+		'editForm',
+		'nameInput',
+		'editSubmitButton',
+		'edit',
+		'editButton',
+		'valuesInput'
 	],
 	#category : #WillowDice
 }
@@ -106,13 +112,20 @@ WDiceApplication >> contentView [
 { #category : #initialization }
 WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
+	edit := false.
+	semaphore := Semaphore new.
 	self model announcer
-		when: WDiceThrow, WDiceRolling 
-		do: [ :ev | semaphore signal].
+		when: WDiceThrow , WDiceRolling, WDiceChanged
+		do: [ :ev | 
+			edit
+				ifFalse: [ semaphore signal ] ].
+	self initializeEditButton.
+	self initializeNameInput.
+	self initializeSubmitButton.
+	self initializeEditForm.
 	self initializeResult.
 	self initializeButton.
 	self initializeContent.
-	semaphore := Semaphore new.
 	firstRender := true.
 	lastThrow := 'nothing'
 ]
@@ -131,9 +144,42 @@ WDiceApplication >> initializeButton [
 WDiceApplication >> initializeContent [
 	^ content := IdentifiedWebView
 		forDivNamed: 'root'
-		containing: [ :canvas | canvas render: result;
-			 render: button]
+		containing: [ :canvas | canvas render: result]
 		applying: [ :div | div addClass bootstrap containerFluid ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeEditButton [
+	editButton := AsynchronicButtonWebView
+		labeled: '🖊️'
+		applying: [ :theButton | 
+			theButton addClass bootstrap buttonLink
+				+ theButton addClass bootstrap button ].
+	editButton onTrigger
+		determineBehaviorByEvaluating: [ :response | 
+			edit := true.
+			semaphore signal ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeEditForm [
+	editForm := IdentifiedWebView
+		forFormNamed: 'form'
+		containing: [ :canvas | 
+			nameInput identifyIn: canvas.
+			canvas
+				render: nameInput;
+				render: editSubmitButton ]
+		applying: [ :aForm | 
+			aForm addClass bootstrap formGroup
+				+ aForm addClass bootstrap containerFluid ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeNameInput [
+	nameInput := TextFieldWebView
+		singleLineTriggeringOnKeyUpApplying: [ :theInput | theInput addClass bootstrap formControl ].
+	nameInput changeContentsTo: self model diceName
 ]
 
 { #category : #initialization }
@@ -141,13 +187,31 @@ WDiceApplication >> initializeResult [
 	^ result := PeriodicallyRenderedWebView
 		evaluating: [ firstRender
 				ifTrue: [ firstRender := false ]
-				ifFalse: [ semaphore wait. ] ]
+				ifFalse: [ semaphore wait ] ]
 		every: 10
 		millisecondsThenRendering:
-			[ :canvas | 
-			self model isRolling ifTrue: [canvas header: '🎲' ] ifFalse: [ canvas header: self model lastResult asString  ]
-			]
+			[ :canvas | edit ifTrue: [ canvas render: editForm ] ifFalse: [self renderDice: canvas] ]
 		until: [ false ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeSubmitButton [
+	editSubmitButton := AsynchronicButtonWebView
+		labeled: 'send'
+		applying: [ :theButton | theButton addClass bootstrap button ].
+	editSubmitButton onTrigger
+		serializeContainerForm;
+		determineBehaviorByEvaluating: [ :response | 
+			edit := false.
+			self model diceName: nameInput contents.
+			semaphore signal ]
+]
+
+{ #category : #initialization }
+WDiceApplication >> initializeValuesInput [
+	valuesInput := TextFieldWebView
+		singleLineTriggeringOnKeyUpApplying: [ :theInput | theInput addClass bootstrap formControl ].
+	valuesInput changeContentsTo: self model values
 ]
 
 { #category : #accessing }
@@ -173,6 +237,17 @@ WDiceApplication >> messageView: aMessage [
 { #category : #updating }
 WDiceApplication >> model [ 
 	^ self session model
+]
+
+{ #category : #initialization }
+WDiceApplication >> renderDice: canvas [
+	canvas header: self model diceName.
+	^ self model isRolling
+		ifTrue: [ canvas header: '🎲' ]
+		ifFalse: [ canvas
+				header: self model lastResult asString;
+				render: button;
+				render: editButton ]
 ]
 
 { #category : #updating }
