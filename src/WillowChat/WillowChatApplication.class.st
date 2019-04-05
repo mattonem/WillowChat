@@ -6,7 +6,6 @@ Class {
 		'chatFlow',
 		'messageViews',
 		'semaphore',
-		'firstRender',
 		'form',
 		'textInput',
 		'button'
@@ -118,7 +117,7 @@ WillowChatApplication >> initialRequest: request [
 	self initializeChatFlow.
 	self initializeContent.
 	semaphore := Semaphore new.
-	firstRender := true
+	semaphore signal.
 ]
 
 { #category : #initialization }
@@ -136,9 +135,7 @@ WillowChatApplication >> initializeButton [
 { #category : #initialization }
 WillowChatApplication >> initializeChatFlow [
 	chatFlow := PeriodicallyRenderedWebView
-		evaluating: [ firstRender
-				ifTrue: [ firstRender := false ]
-				ifFalse: [ semaphore wait ] ]
+		evaluating: [ semaphore wait ]
 		every: 0
 		millisecondsThenRendering:
 			[ :canvas | messageViews do: [ :messageView | canvas render: messageView ] ]

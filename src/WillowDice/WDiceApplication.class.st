@@ -4,7 +4,6 @@ Class {
 	#instVars : [
 		'content',
 		'semaphore',
-		'firstRender',
 		'lastThrow',
 		'result',
 		'button',
@@ -125,6 +124,7 @@ WDiceApplication >> initialRequest: request [
 	super initialRequest: request.
 	edit := false.
 	semaphore := Semaphore new.
+	semaphore signal.
 	self model announcer
 		when: WDiceThrow , WDiceRolling, WDiceChanged
 		do: [ :ev | 
@@ -138,7 +138,6 @@ WDiceApplication >> initialRequest: request [
 	self initializeResult.
 	self initializeButton.
 	self initializeContent.
-	firstRender := true.
 	lastThrow := 'nothing'
 ]
 
@@ -198,9 +197,7 @@ WDiceApplication >> initializeNameInput [
 { #category : #initialization }
 WDiceApplication >> initializeResult [
 	^ result := PeriodicallyRenderedWebView
-		evaluating: [ firstRender
-				ifTrue: [ firstRender := false ]
-				ifFalse: [ semaphore wait ] ]
+		evaluating: [  semaphore wait ]
 		every: 10
 		millisecondsThenRendering:
 			[ :canvas | edit ifTrue: [ canvas render: editForm ] ifFalse: [self renderDice: canvas] ]
