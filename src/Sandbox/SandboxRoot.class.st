@@ -26,6 +26,8 @@ SandboxRoot class >> start [
 	self registerAsDeployedApplication.
 	WillowSharedModelSession
 		allSubclassesDo: [ :clazz | clazz applicationClass registerAsDeployedApplication ].
+	WillowSandBoxSession
+		allSubclassesDo: [ :clazz | clazz applicationClass registerAsDeployedApplication ].
 	(ZnZincServerAdaptor port: 8080)
 		codec: GRPharoUtf8Codec new;
 		start
@@ -37,6 +39,8 @@ SandboxRoot class >> stop [
 	ZnZincServerAdaptor allInstancesDo: [ :each | each shutDown ].
 	self unregisterFromApplications.
 	WillowSharedModelSession
+		allSubclassesDo: [ :clazz | clazz applicationClass unregisterFromApplications ].
+	WillowSandBoxSession
 		allSubclassesDo: [ :clazz | clazz applicationClass unregisterFromApplications ].
 	Smalltalk garbageCollect
 	
@@ -56,6 +60,7 @@ SandboxRoot >> children [
 SandboxRoot >> initialize [
 	super initialize.
 	children := WillowSharedModelWelcome allSubclasses collect: [ :aclazz | aclazz new]. 
+	children addAll: (WillowSandBoxWelcome allSubclasses collect: [ :aclazz | aclazz new]).
 ]
 
 { #category : #rendering }
