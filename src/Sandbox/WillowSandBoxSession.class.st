@@ -6,7 +6,7 @@ Class {
 
 { #category : #accessing }
 WillowSandBoxSession class >> applicationClass [
-^WDiamondSquareApplication
+^self subclassResponsibility
 ]
 
 { #category : #accessing }
