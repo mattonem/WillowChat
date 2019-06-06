@@ -157,6 +157,5 @@ WDiamondSquareApplication >> requiredLibraries [
 
 	" Libraries added here are not considered until the server is restarted.
 	  Including a library with a favicon.ico will automatically use it.	"
-
-	^ {Smalltalks2017FileMetadataLibrary default. 	SpinKitMetadataLibrary default}
+	^ {	SpinKitMetadataLibrary default}
 ]
