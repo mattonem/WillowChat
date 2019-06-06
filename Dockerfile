@@ -1,4 +1,4 @@
-FROM mattonem/pharodockerfile:pharo70
+FROM mattonem/pharodockerfile:pharo70 
 
 MAINTAINER mattone.m@gmail.com
 
