@@ -15,6 +15,10 @@ BaselineOfWillowChat >> baseline: spec [
 						repository: 'github://ba-st/Willow-Bootstrap:v11/source';
 						loads: 'Deployment' ].
 			spec
+				baseline: 'WillowSpinKit'
+				with: [ spec repository: 'github://ba-st/Willow-SpinKit:v7/source'.
+					spec loads: 'Deployment' ].
+			spec
 				package: 'DiamondSquare'
 				with: [ spec
 						repository: 'github://mattonem/Kata-DiamondSquareAlgo:master/src' ].
