@@ -8,3 +8,10 @@ Class {
 WDiamondSquareWelcome class >> sessionClass [
 	^ WDiamondSquareSession
 ]
+
+{ #category : #rendering }
+WDiamondSquareWelcome >> renderDescription: aRenderer [
+	super renderDescription: aRenderer.
+	aRenderer paragraph: ''
+	 
+]

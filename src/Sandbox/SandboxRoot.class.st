@@ -59,8 +59,8 @@ SandboxRoot >> children [
 { #category : #rendering }
 SandboxRoot >> initialize [
 	super initialize.
-	children := WillowSharedModelWelcome allSubclasses collect: [ :aclazz | aclazz new]. 
-	children addAll: (WillowSandBoxWelcome allSubclasses collect: [ :aclazz | aclazz new]).
+	children := (WillowSandBoxWelcome allSubclasses
+		reject: [ :c | c isAbstract ]) collect: [ :aclazz | aclazz new ]
 ]
 
 { #category : #rendering }

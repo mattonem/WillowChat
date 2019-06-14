@@ -13,6 +13,11 @@ WillowSharedModelWelcome class >> canBeRoot [
 ]
 
 { #category : #testing }
+WillowSharedModelWelcome class >> isAbstract [
+	^ true
+]
+
+{ #category : #testing }
 WillowSharedModelWelcome class >> sessionClass [
 	^ self subclassResponsibility 
 ]

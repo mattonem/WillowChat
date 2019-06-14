@@ -5,6 +5,11 @@ Class {
 }
 
 { #category : #testing }
+WDiceWelcome class >> isAbstract [
+	^ false
+]
+
+{ #category : #testing }
 WDiceWelcome class >> sessionClass [
 	^ WillowDiceSession
 ]

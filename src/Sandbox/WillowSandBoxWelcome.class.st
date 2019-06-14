@@ -18,6 +18,9 @@ WillowSandBoxWelcome >> renderContentOn: aRenderer [
 		class: 'panel panel-default';
 		with: [
 			aRenderer div
+				class: 'panel-heading';
+				with: [ self renderTitle: aRenderer ].
+			aRenderer div
 				class: 'panel-body';
 				with: [ self
 						renderDescription: aRenderer;
@@ -26,6 +29,11 @@ WillowSandBoxWelcome >> renderContentOn: aRenderer [
 
 { #category : #rendering }
 WillowSandBoxWelcome >> renderDescription: aRenderer [
-	aRenderer heading: self class sessionClass applicationClass applicationTitle.
-	 
+]
+
+{ #category : #rendering }
+WillowSandBoxWelcome >> renderTitle: aRenderer [
+	aRenderer heading
+		class: 'panel-title';
+		with: self class sessionClass applicationClass applicationTitle
 ]

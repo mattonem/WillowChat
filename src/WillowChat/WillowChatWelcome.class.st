@@ -5,6 +5,12 @@ Class {
 }
 
 { #category : #testing }
+WillowChatWelcome class >> isAbstract [ 	
+
+	^ false
+]
+
+{ #category : #testing }
 WillowChatWelcome class >> sessionClass [
 	^ WillowChatSession
 ]
