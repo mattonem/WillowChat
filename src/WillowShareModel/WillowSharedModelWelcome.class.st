@@ -1,6 +1,6 @@
 Class {
 	#name : #WillowSharedModelWelcome,
-	#superclass : #WAComponent,
+	#superclass : #WillowSandBoxWelcome,
 	#instVars : [
 		'uid'
 	],
@@ -18,7 +18,7 @@ WillowSharedModelWelcome class >> sessionClass [
 ]
 
 { #category : #rendering }
-WillowSharedModelWelcome >> renderContentOn: aRenderer [
+WillowSharedModelWelcome >> renderActions: aRenderer [
 	aRenderer anchor
 		callback: [ uid := self class sessionClass newModel ];
 		class: 'btn btn-primary';

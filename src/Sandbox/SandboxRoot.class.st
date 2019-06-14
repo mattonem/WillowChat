@@ -65,7 +65,15 @@ SandboxRoot >> initialize [
 
 { #category : #rendering }
 SandboxRoot >> renderContentOn: aRenderer [
-	children do: [ :c | aRenderer div with: [ aRenderer render: c ] ]
+	aRenderer div
+		class: 'container';
+		with: [ aRenderer
+				heading: 'Kata SandBox';
+				paragraph:
+					'This is a place where I dropped a couple of web applications made just for fun as Katas or exercise. Fell free to play around. ';
+				paragraph:
+					'All this website is running thanks to Seaside framework and the awesome Pharo platforme.'.
+			children do: [ :c | aRenderer div with: [ aRenderer render: c ] ] ]
 ]
 
 { #category : #rendering }
