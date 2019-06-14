@@ -24,13 +24,15 @@ WillowSharedModelWelcome class >> sessionClass [
 
 { #category : #rendering }
 WillowSharedModelWelcome >> renderActions: aRenderer [
-	aRenderer anchor
-		callback: [ uid := self class sessionClass newModel ];
-		class: 'btn btn-primary';
-		with: 'new ', self class sessionClass handlerName.
-	uid
-		ifNotNil: [ aRenderer anchor
-				class: 'btn btn-primary';
-				url: '/', self class sessionClass handlerName,'/uid/' , uid;
-				with: 'access' ]
+	aRenderer div
+		class: 'btn-group';
+		with: [ aRenderer anchor
+				callback: [ uid := self class sessionClass newModel ];
+				class: 'btn btn-default';
+				with: 'new ' , self class sessionClass handlerName.
+			uid
+				ifNotNil: [ aRenderer anchor
+						class: 'btn btn-default';
+						url: '/' , self class sessionClass handlerName , '/uid/' , uid;
+						with: 'access' ] ]
 ]
