@@ -1,6 +1,8 @@
 Class {
 	#name : #SandboxRoot,
 	#superclass : #WAComponent,
+	#traits : 'SandboxGoogleSetup',
+	#classTraits : 'SandboxGoogleSetup classTrait',
 	#instVars : [
 		'chatindex',
 		'children'
@@ -65,6 +67,7 @@ SandboxRoot >> initialize [
 
 { #category : #rendering }
 SandboxRoot >> renderContentOn: aRenderer [
+
 	aRenderer div
 		class: 'container';
 		with: [ aRenderer
@@ -74,18 +77,4 @@ SandboxRoot >> renderContentOn: aRenderer [
 				paragraph:
 					'All this website is running thanks to Seaside framework and the awesome Pharo platforme.'.
 			children do: [ :c | aRenderer div with: [ aRenderer render: c ] ] ]
-]
-
-{ #category : #rendering }
-SandboxRoot >> updateRoot: aRoot [
-	super updateRoot: aRoot.
-	aRoot script
-		attributeAt: 'async' put: true;
-		url: '//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'.
-	aRoot script
-		with:
-			'  (adsbygoogle = window.adsbygoogle || []).push({
-    google_ad_client: "ca-pub-6554111086429445",
-    enable_page_level_ads: true
-  });'
 ]

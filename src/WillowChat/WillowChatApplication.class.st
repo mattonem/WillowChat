@@ -1,6 +1,8 @@
 Class {
 	#name : #WillowChatApplication,
 	#superclass : #WillowApplication,
+	#traits : 'SandboxGoogleSetup',
+	#classTraits : 'SandboxGoogleSetup classTrait',
 	#instVars : [
 		'content',
 		'chatFlow',
