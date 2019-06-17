@@ -8,7 +8,9 @@ Class {
 		'form',
 		'bitmap',
 		'editSubmitButton',
-		'sizeInput'
+		'sizeInput',
+		'key',
+		'model'
 	],
 	#category : #WillowDiamondSquare
 }
@@ -36,7 +38,8 @@ WDiamondSquareApplication >> componentSupplierForApplication [
 
 { #category : #accessing }
 WDiamondSquareApplication >> computeMap [
-	bitmap := (DiamondSquare newSize: self mapSize rand: Random new) map.
+	model := (DiamondSquare newSize: self mapSize rand: Random new).
+	key := WDiamondSquareFileLibrary addBitmapAsPng: model TTL: 1 minute.
 	self initializeMap 
 ]
 
@@ -138,24 +141,15 @@ WDiamondSquareApplication >> possibleSize [
 
 { #category : #accessing }
 WDiamondSquareApplication >> renderMapOn: aCanvas [
-	bitmap ifNil: [ ^ self ].
-	aCanvas
-		table: [ | size |
-			size := bitmap size sqrt.
-			1 to: size do: [ :i | 
-				aCanvas tableRow
-					with: [ 1 to: size do: [ :j | 
-							aCanvas tableData
-								style:
-									'background-color: ' , (Color gray: (bitmap at: i @ j)) asHTMLColor
-										, ';';
-								with: [ aCanvas div style: 'min-width: 1px;min-height: 1px;' ] ] ] ] ]
+	model ifNil: [ ^ self ].
+	aCanvas image url: (WDiamondSquareFileLibrary urlOf: key).
 ]
 
 { #category : #accessing }
 WDiamondSquareApplication >> requiredLibraries [
-
 	" Libraries added here are not considered until the server is restarted.
 	  Including a library with a favicon.ico will automatically use it.	"
-	^ {	SpinKitMetadataLibrary default}
+
+	^ {SpinKitMetadataLibrary default.
+	WDiamondSquareFileLibrary default}
 ]
