@@ -10,7 +10,9 @@ Class {
 		'semaphore',
 		'form',
 		'textInput',
-		'button'
+		'nameInput',
+		'sendButton',
+		'nameButton'
 	],
 	#category : #WillowChat
 }
@@ -124,14 +126,22 @@ WillowChatApplication >> initialRequest: request [
 
 { #category : #initialization }
 WillowChatApplication >> initializeButton [
-	button := AsynchronicButtonWebView
+	sendButton := AsynchronicButtonWebView
 		labeled: 'send'
 		applying: [ :theButton | theButton addClass bootstrap button ].
-	button onTrigger
+	sendButton onTrigger
 		serializeContainerForm;
 		determineBehaviorByEvaluating: [ :response | 
 			self sendMessage: textInput contents.
-			response onReturn setValueTo: '' thenTriggerChangeOf: textInput ]
+			response onReturn setValueTo: '' thenTriggerChangeOf: textInput ].
+	nameButton := AsynchronicButtonWebView
+		labeled: 'send'
+		applying: [ :theButton | theButton addClass bootstrap button ].
+	nameButton onTrigger
+		serializeContainerForm;
+		determineBehaviorByEvaluating: [ :response | 
+			response onReturn
+				render: form ]
 ]
 
 { #category : #initialization }
@@ -150,14 +160,17 @@ WillowChatApplication >> initializeContent [
 		forDivNamed: 'root'
 		containing: [ :canvas | canvas render: chatFlow;
 			 render: form]
-		applying: [ :div | div addClass bootstrap containerFluid ]
+		applying: [ :div | div addClass bootstrap container ]
 ]
 
 { #category : #initialization }
 WillowChatApplication >> initializeField [
 	textInput := TextFieldWebView
 		multiLineTriggeringOnKeyUpApplying: [ :theInput | 
-			theInput addClass bootstrap formControl ]
+			theInput addClass bootstrap formControl ].
+	nameInput := TextFieldWebView
+		singleLineTriggeringOnKeyUpApplying: [ :theInput | 
+			theInput addClass bootstrap formControl + (theInput setPlaceholderTo: 'username')  ]
 ]
 
 { #category : #initialization }
@@ -165,11 +178,18 @@ WillowChatApplication >> initializeForm [
 	form := IdentifiedWebView
 		forFormNamed: 'form'
 		containing: [ :canvas | 
-			textInput identifyIn: canvas.
+			nameInput model isEmpty
+				ifTrue: [ nameInput identifyIn: canvas.
+					canvas
+						render: nameInput;
+						render: nameButton ]
+				ifFalse: [ textInput identifyIn: canvas.
 					canvas
 						render: textInput;
-						render: button ]
-		applying: [ :aForm | aForm addClass bootstrap formInline + aForm addClass bootstrap containerFluid ]
+						render: sendButton ] ]
+		applying: [ :aForm | 
+			aForm addClass bootstrap formInline
+				+ aForm addClass bootstrap containerFluid ]
 ]
 
 { #category : #accessing }
@@ -182,8 +202,17 @@ WillowChatApplication >> jQueryLibrary [
 WillowChatApplication >> messageView: aMessage [
 	^ IdentifiedWebView
 		forDivNamed: 'message'
-		containing: [ :canvas | canvas preformatted class:'well'; with: aMessage message]
-		applying: [ :div | ]
+		containing: [ :canvas | 
+			canvas div
+				class: 'panel';
+				with: [ 
+					canvas div
+						class: 'panel-title';
+						with: [ canvas paragraph: aMessage username, ' says:' ] .
+					canvas div
+						class: 'panel-body';
+						with: [ canvas preformatted: aMessage message ] ] ]
+		applying: [ :div |  ]
 ]
 
 { #category : #updating }
@@ -210,5 +239,5 @@ WillowChatApplication >> requiredLibraries [
 
 { #category : #initialization }
 WillowChatApplication >> sendMessage: aString [
-	self model sendMessage: aString.
+	self model sendMessage: aString username: nameInput model.
 ]

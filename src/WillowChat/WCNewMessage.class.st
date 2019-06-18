@@ -2,7 +2,8 @@ Class {
 	#name : #WCNewMessage,
 	#superclass : #Announcement,
 	#instVars : [
-		'message'
+		'message',
+		'username'
 	],
 	#category : #WillowChat
 }
@@ -15,4 +16,14 @@ WCNewMessage >> message [
 { #category : #accessing }
 WCNewMessage >> message: aMessage [
 	message := aMessage
+]
+
+{ #category : #accessing }
+WCNewMessage >> username [
+	^ username
+]
+
+{ #category : #accessing }
+WCNewMessage >> username: aName [
+username := aName
 ]

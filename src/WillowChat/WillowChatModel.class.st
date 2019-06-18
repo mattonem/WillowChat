@@ -25,3 +25,13 @@ WillowChatModel >> sendMessage: aString [
 				message: aString;
 				yourself)
 ]
+
+{ #category : #initialization }
+WillowChatModel >> sendMessage: aString username: aName [
+	announcer
+		announce:
+			(WCNewMessage new
+				message: aString;
+				username: aName;
+				yourself)
+]
