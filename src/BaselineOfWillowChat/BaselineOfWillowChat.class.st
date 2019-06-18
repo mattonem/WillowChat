@@ -22,6 +22,11 @@ BaselineOfWillowChat >> baseline: spec [
 				package: 'DiamondSquare'
 				with: [ spec
 						repository: 'github://mattonem/Kata-DiamondSquareAlgo:master/src' ].
+			spec 
+				baseline: 'KataGameOfLife'
+				with: [ spec
+					repository: 'github://mattonem/Kata-GameOfLife:master/src'; 
+					loads: 'core'].
 			spec
 				package: 'Sandbox';
 				package: 'WillowShareModel';
