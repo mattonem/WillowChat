@@ -25,7 +25,7 @@ BaselineOfWillowChat >> baseline: spec [
 			spec 
 				baseline: 'KataGameOfLife'
 				with: [ spec
-					repository: 'github://mattonem/Kata-GameOfLife:better-baseline/src' 
+					repository: 'github://mattonem/Kata-GameOfLife:better-baseline/src'; 
 					loads: 'core'].
 			spec
 				package: 'Sandbox';
