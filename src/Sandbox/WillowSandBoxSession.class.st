@@ -1,6 +1,6 @@
 Class {
 	#name : #WillowSandBoxSession,
-	#superclass : #Object,
+	#superclass : #WillowSession,
 	#category : #Sandbox
 }
 
