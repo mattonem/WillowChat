@@ -33,5 +33,6 @@ BaselineOfWillowChat >> baseline: spec [
 				package: 'WillowChat';
 				package: 'WillowDice';
 				package: 'WillowDiamondSquare';
+				package: 'WillowGoL';
 				yourself ]
 ]
