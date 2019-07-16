@@ -6,12 +6,13 @@ Class {
 
 { #category : #rendering }
 WillowSandBoxWelcome >> renderActions: aRenderer [
-	^ aRenderer div
-		class: 'btn-group';
-		with: [ aRenderer anchor
-				class: 'btn btn-default';
-				url: '/' , self class sessionClass handlerName;
-				with: 'new ' , self class sessionClass handlerName ]
+	^ aRenderer paragraph
+		with: [ aRenderer div
+				class: 'btn-group';
+				with: [ aRenderer anchor
+						class: 'btn btn-default';
+						url: '/' , self class sessionClass handlerName;
+						with: 'new ' , self class sessionClass handlerName ] ]
 ]
 
 { #category : #rendering }
